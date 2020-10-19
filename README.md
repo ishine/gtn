@@ -27,7 +27,8 @@ with a single call to `gtn.backward`.
 
 First [install](#installation) the python bindings.
 
-The following is a minimal example of building two WFSAs with `gtn`, constructing a simple function on the graphs, and computing gradients.
+The following is a minimal example of building two WFSAs with `gtn`, constructing a simple function on the graphs, and computing gradients. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/facebookresearch/gtn/blob/master/examples/notebooks/quick-start.ipynb)
+
 
 ```python
 import gtn
@@ -45,21 +46,23 @@ g1.add_arc(1, 2, 1)
 g1.add_arc(1, 2, 0)
 
 g2 = gtn.Graph()
-g2.add_node(True)
+g2.add_node(True, True)
 g2.add_arc(0, 0, 1)
 g2.add_arc(0, 0, 0)
 
 # Compute a function of the graphs:
 intersection = gtn.intersect(g1, g2)
-score = gtn.forward_score()
+score = gtn.forward_score(intersection)
 
 # Visualize the intersected graph:
 gtn.draw(intersection, "intersection.pdf")
 
 # Backprop:
 gtn.backward(score)
-```
 
+# Print gradients of arc weights 
+print(g1.grad().weights_to_list()) # [1.0, 0.0, 1.0, 0.0]
+```
 
 ## Installation
 
